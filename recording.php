@@ -1,18 +1,34 @@
+
+<?php 
+
+require('conection.php');
+$query = "SELECT id , shortname FROM cfg_campaigns ORDER BY shortname ";
+$resultado = $mysqli->query($query);
+
+
+
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>robot_prueba</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script language="javascript" src="js/jquery-3.3.1.min.js" ></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <!--date picker-->
   <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 
   <!-- Isolated Version of Bootstrap, not needed if your site already uses Bootstrap -->
   <link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" />
-  <script>
+   <script>
     $(document).ready(function(){
       var date_input=$('input[name="date"]'); //our date input has the name "date"
       var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
@@ -24,7 +40,7 @@
       };
       date_input.datepicker(options);
     })
-  </script>
+  </script> 
 
 <!-- Bootstrap Date-Picker Plugin -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
@@ -57,7 +73,7 @@
   <div class="col-md-12">
 
     
-    <form method="post">
+    <form id="combo" name="combo" action="guarda.php" method="post">
     <!--saltos de lineas posteriormente corregir en css-->
     <br>
     <br>
@@ -76,51 +92,22 @@
         <input type="text" class="form-control" id="inputServer" placeholder="192.168.88.88">
       </div>
 
+     
+      <div class="form-group col-md-4">
+        <label for="inputServer">Select Campaigns</label>
+        <select name="cbx_estado" id="cbx_estado" class="form-control">
+        <option value="0" class="form-control">Select Campaigns</option>
+        <?php while($row = $resultado->fetch_assoc()) { ?>
+          <option value="<?php echo $row['id']; ?>"><?php echo $row['shortname']; ?></option>
+        <?php } ?>
+      </select></div>
+
       <div class="selector-grammar form-group col-md-4">
         <label for="inputGrammar">Grammars</label>
-        <select id="inputGrammar" class="form-control">
-        </select>
-        <script type="text/javascript">
-                $(document).ready(function() {
-                    $(".selector-campaign select").change(function() {
-                        var form_data = {
-                                is_ajax: 1,
-                                pais: +$(".selector-campaign select").val()
-                        };
-                        $.ajax({
-                                type: "POST",
-                                url: "getGrammar.php",
-                                data: form_data,
-                                success: function(response)
-                                {
-                                    $('.selector-grammar select').html(response).fadeIn();
-                                }
-                        });
-                    });
+        <select id="inputGrammar" class="form-control"></select>
 
-                });
-            </script>
-        
-      </div>
-      <div class="selector-campaign form-group col-md-4">
-        <label for="inputCampaign">Campaign</label>
-        <select id="inputCampaign" class="form-control">
-        </select>
-        <script type="text/javascript">
-                $(document).ready(function() {
-                    $.ajax({
-                            type: "POST",
-                            url: "getCampaign.php",
-                            success: function(response)
-                            {
-                                $('.selector-campaign select').html(response).fadeIn();
-                            }
-                    });
-
-                });
-            </script>
-
-      </div>
+      </div>  
+      
       <div class="form-group  col-md-4">
         <label for="inputTelephone">Telephone</label>
         <input type="text" class="form-control" id="inputTelephone" placeholder="974389896">
